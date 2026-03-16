@@ -21,7 +21,7 @@ show_banner() {
 
 start_audit() {
     show_banner
-    read -p "Enter Target Username: " username
+    read -p "Enter Target Username: " @la.y.al_
     
     wordlist="passwords.txt"
 
