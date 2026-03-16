@@ -8,6 +8,7 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
 NC='\033[0m' 
 
 show_banner() {
@@ -21,15 +22,23 @@ show_banner() {
 
 start_audit() {
     show_banner
-    read -p "Enter Target Username: " @la.y.al_
+    read -p "Enter Target Username: " username
     
+    # This is the file the script will look for
     wordlist="passwords.txt"
 
     if [[ -f "$wordlist" ]]; then
+        echo -e "${YELLOW}[!] Loading wordlist...${NC}"
+        echo "------------------------------------------"
+        
         while IFS= read -r password; do
-            echo -n -e "Testing ${username} : ${password} ... "
+            # Skip empty lines
+            [[ -z "$password" ]] && continue
+
+            echo -n -e "Audit: ${username} | Testing: ${password} ... "
             sleep 0.5
             
+            # Simple simulation logic
             if [[ "$password" == "123456" || "$password" == "password" ]]; then
                 echo -e "${RED}[VULNERABLE]${NC}"
             else
@@ -38,6 +47,7 @@ start_audit() {
         done < "$wordlist"
     else
         echo -e "${RED}[ERROR] passwords.txt not found.${NC}"
+        echo -e "Please create a file named passwords.txt first."
     fi
 }
 
